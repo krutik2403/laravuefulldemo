@@ -62,11 +62,8 @@ export default {
                 })
                 .then(res => res.json())
                 .then(res => {
-                    $('.alert').hide();
-                    $('.alert').html();
                     if(res.status == 1) {
-                        $('#notification-success').html(res.message);
-                        $('#notification-success').show();
+                        this.$router.push('/login')
                     } else {
                         $('#notification-error').html(res.message);
                         $('#notification-error').show();

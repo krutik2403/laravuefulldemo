@@ -51,7 +51,12 @@ export default {
             })
             .then(res => res.json())
             .then(res => {
-                this.$router.push('/dashboard')
+                if(res.status == 1) {
+                    this.$router.push('/dashboard')
+                } else {
+                    $('#notification-error').html(res.message);
+                    $('#notification-error').show();
+                }
             })
             .catch(error => console.log(error))
         }

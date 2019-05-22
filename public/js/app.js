@@ -1865,7 +1865,12 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.$router.push('/dashboard');
+        if (res.status == 1) {
+          _this.$router.push('/dashboard');
+        } else {
+          $('#notification-error').html(res.message);
+          $('#notification-error').show();
+        }
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -1937,6 +1942,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submitRegisterForm: function submitRegisterForm() {
+      var _this = this;
+
       fetch('api/user/register', {
         method: 'POST',
         body: JSON.stringify(this.user),
@@ -1946,12 +1953,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         return res.json();
       }).then(function (res) {
-        $('.alert').hide();
-        $('.alert').html();
-
         if (res.status == 1) {
-          $('#notification-success').html(res.message);
-          $('#notification-success').show();
+          _this.$router.push('/login');
         } else {
           $('#notification-error').html(res.message);
           $('#notification-error').show();
@@ -2028,9 +2031,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
+  },
+  methods: {
+    logout: function logout() {
+      this.$router.push('/');
+    }
   }
 });
 
@@ -38508,7 +38517,13 @@ var render = function() {
       _vm._v(" "),
       _c("router-link", { attrs: { to: "/register" } }, [
         _c("a", { staticClass: "nav-link" }, [_vm._v("Register")])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-info text-right", on: { click: _vm.logout } },
+        [_vm._v("Logout")]
+      )
     ],
     1
   )
