@@ -1,6 +1,6 @@
 # laravuefulldemo
 
-Laravel + Vue
+Laravel & VueJS integration
 
 # Download code to local machine
 
@@ -38,3 +38,12 @@ run npm run dev to create the build
 run php artisan migrate
 
 now you can access the setup from brower 
+
+# Contact for more 
+
+Contact me for more demos and queries if you have any
+
+Krutik Patel
+Email: kkrutikk@gmail.com
+LinkedIn: https://www.linkedin.com/in/krutik-patel/
+Skype: krutik9223
