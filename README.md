@@ -1,6 +1,8 @@
-# laravuefulldemo
+# Laravel + Vue Full Demo
 
 Laravel & VueJS integration
+
+![](resources/js/assets/banner.jpg)
 
 # Download code to local machine
 
