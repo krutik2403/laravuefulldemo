@@ -53,7 +53,7 @@ export default {
 
     methods: {
         submitRegisterForm() {
-            fetch('api/user/register', {
+            fetch('api/register', {
                     method: 'POST',
                     body: JSON.stringify(this.user),
                     headers: {

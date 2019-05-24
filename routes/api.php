@@ -17,5 +17,11 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::post('user/login', 'Auth\LoginController@loginCheck');
-Route::post('user/register', 'Auth\RegisterController@register');
+
+
+
+Route::post('login', 'Auth\LoginController@loginCheck');
+Route::post('register', 'Auth\RegisterController@register');
+Route::get('refresh', 'Auth\AuthController@refresh');
+Route::get('me', 'Auth\AuthController@user');
+Route::post('logout', 'Auth\AuthController@logout');

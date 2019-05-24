@@ -40,9 +40,15 @@ export default {
         }
     },
 
+    mounted() {
+        if(this.$store.state.isLoggedIn == false) {
+            this.$router.push('/dashboard')
+        }
+    },
+
     methods: {
         submitLogin() {
-            fetch('api/user/login', {
+            fetch('api/login', {
                 method: 'POST',
                 body: JSON.stringify(this.user),
                 headers: {
@@ -52,6 +58,7 @@ export default {
             .then(res => res.json())
             .then(res => {
                 if(res.status == 1) {
+                    this.$store.commit('setLogin', res.data)                    
                     this.$router.push('/dashboard')
                 } else {
                     $('#notification-error').html(res.message);

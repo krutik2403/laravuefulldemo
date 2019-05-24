@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Auth;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller
 {
@@ -53,8 +54,16 @@ class LoginController extends Controller
                 return response()->json(['status' => 0, 'message' => implode(", ", $validator->messages()->all())], 200);
             }
 
-            if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                return response()->json(['status' => 1, 'message' => 'You logged in successfully!']);
+            if($token = JWTAuth::attempt(['email' => $request->email, 'password' => $request->password])) {
+
+                $data = [
+                    "access_token" => $token,
+                    "user" => $this->guard()->user(),
+                    "token_type" => "bearer",
+                    "expires_in" => auth("api")->factory()->getTTL() * 60
+                ];
+                
+                return response()->json(['status' => 1, 'message' => 'You logged in successfully!', 'data' => $data]);
             }
 
             return response()->json(['status' => 0, 'message' => 'Invalid username or password. Please try again.']);
