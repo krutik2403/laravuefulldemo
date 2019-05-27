@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         try {
-            $user = auth()->user();
+            $user = auth('api')->user();
 
             if(!$user) {
                 return response()->json([

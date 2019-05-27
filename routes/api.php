@@ -25,3 +25,5 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::get('refresh', 'Auth\AuthController@refresh');
 Route::get('me', 'Auth\AuthController@user');
 Route::post('logout', 'Auth\AuthController@logout');
+
+Route::resource('todo', 'ToDoController');

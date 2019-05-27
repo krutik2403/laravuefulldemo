@@ -2136,11 +2136,115 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      todos: [],
+      todo: {
+        id: '',
+        title: '',
+        description: ''
+      },
+      editTodoItem: false,
+      api_url: '',
+      method: ''
+    };
   },
-  methods: {},
+  methods: {
+    fetchTodos: function fetchTodos() {
+      var _this = this;
+
+      fetch('/api/todo').then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.todos = res.data.todos;
+      })["catch"](function (error) {
+        return console(error);
+      });
+    },
+    saveTodo: function saveTodo() {
+      var _this2 = this;
+
+      if (this.editTodoItem == true) {
+        this.api_url = 'api/todo/' + this.todo.id;
+        this.method = "PUT";
+      } else {
+        this.api_url = 'api/todo';
+        this.method = "POST";
+      }
+
+      fetch(this.api_url, {
+        method: this.method,
+        body: JSON.stringify(this.todo),
+        headers: {
+          'content-type': 'application/json'
+        }
+      }).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        if (res.status == 1) {
+          $('#notification-error').html('');
+          $('#notification-error').hide();
+
+          _this2.fetchTodos();
+
+          _this2.todo.id = "";
+          _this2.todo.title = "";
+          _this2.todo.description = "";
+          _this2.editTodoItem = false;
+          _this2.api_url = '';
+          _this2.method = '';
+        } else {
+          $('#notification-error').html(res.message);
+          $('#notification-error').show();
+        }
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    removeTodo: function removeTodo(id) {
+      var _this3 = this;
+
+      if (confirm('Are you sure want to delete?')) {
+        fetch('api/todo/' + id, {
+          method: 'delete'
+        }).then(function (res) {
+          return res.json();
+        }).then(function (res) {
+          _this3.fetchTodos();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    editTodo: function editTodo(todo) {
+      this.editTodoItem = true;
+      this.todo.id = todo.id;
+      this.todo.title = todo.title;
+      this.todo.description = todo.description;
+    }
+  },
   computed: {
     currentUser: function currentUser() {
       return this.$store.state.currentUser;
@@ -2148,7 +2252,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   created: function created() {
-    console.log('created');
+    this.fetchTodos();
   },
   updated: function updated() {
     console.log('updated');
@@ -38780,14 +38884,139 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-12" }, [
-      _c("h2", [
-        _vm._v("Wolcome to Dashboard " + _vm._s(_vm.currentUser.name) + " !!")
-      ])
-    ])
+    _c(
+      "div",
+      { staticClass: "col-md-12" },
+      [
+        _c("h4", [
+          _vm._v("Wolcome to Dashboard " + _vm._s(_vm.currentUser.name) + " !!")
+        ]),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "alert alert-danger",
+          staticStyle: { display: "none" },
+          attrs: { id: "notification-error" }
+        }),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            attrs: { action: "" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.saveTodo($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.todo.title,
+                    expression: "todo.title"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", required: "" },
+                domProps: { value: _vm.todo.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.todo, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.todo.description,
+                    expression: "todo.description"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { cols: "30", rows: "2", required: "" },
+                domProps: { value: _vm.todo.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.todo, "description", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.todos, function(todo) {
+          return _c(
+            "div",
+            { key: todo.id, staticClass: "alert alert-warning" },
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(todo.title) +
+                  "\n            \n            "
+              ),
+              _c("div", { staticClass: "text-right" }, [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.editTodo(todo)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-edit" })]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.removeTodo(todo.id)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-trash" })]
+                )
+              ])
+            ]
+          )
+        })
+      ],
+      2
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { staticClass: "btn btn-success btn-block" }, [
+        _vm._v("Save")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
