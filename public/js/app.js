@@ -6760,7 +6760,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\na, a:hover {\n    color: white;\n}\n", ""]);
+exports.push([module.i, "\n.navbar a, .navbar a:hover {\n    color: white;\n}\n", ""]);
 
 // exports
 
@@ -38467,7 +38467,22 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _c(
+                "div",
+                { staticClass: "text-center" },
+                [
+                  _c("button", { staticClass: "btn btn-secondary btn-block" }, [
+                    _vm._v("Login")
+                  ]),
+                  _vm._v(" "),
+                  _c("router-link", { attrs: { to: "/register" } }, [
+                    _c("a", { staticClass: "nav-link" }, [
+                      _vm._v("Don't have an account?")
+                    ])
+                  ])
+                ],
+                1
+              )
             ]
           )
         ])
@@ -38477,24 +38492,7 @@ var render = function() {
     _c("div", { staticClass: "col-md-3" })
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-left" }, [
-      _c("button", { staticClass: "btn btn-secondary btn-block" }, [
-        _vm._v("Login")
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "btn btn-danger btn-block", attrs: { href: "" } },
-        [_vm._v("Don't have an account?")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38680,7 +38678,22 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _vm._m(0)
+              _c(
+                "div",
+                { staticClass: "text-center" },
+                [
+                  _c("button", { staticClass: "btn btn-secondary btn-block" }, [
+                    _vm._v("Register")
+                  ]),
+                  _vm._v(" "),
+                  _c("router-link", { attrs: { to: "/login" } }, [
+                    _c("a", { staticClass: "nav-link" }, [
+                      _vm._v("Already have an account?")
+                    ])
+                  ])
+                ],
+                1
+              )
             ]
           )
         ])
@@ -38690,24 +38703,7 @@ var render = function() {
     _c("div", { staticClass: "col-md-3" })
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-left" }, [
-      _c("button", { staticClass: "btn btn-secondary btn-block" }, [
-        _vm._v("Register")
-      ]),
-      _vm._v(" "),
-      _c(
-        "a",
-        { staticClass: "btn btn-success btn-block", attrs: { href: "" } },
-        [_vm._v("Already have an account?")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

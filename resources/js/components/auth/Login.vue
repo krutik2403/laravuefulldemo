@@ -16,9 +16,9 @@
                             <input type="password" name="password" id="password" placeholder="Password" class="form-control" required v-model="user.password"> 
                         </div>
 
-                        <div class="text-left">
+                        <div class="text-center">
                             <button class="btn btn-secondary btn-block">Login</button>
-                            <a href="" class="btn btn-danger btn-block">Don't have an account?</a>
+                            <router-link to="/register"><a class="nav-link">Don't have an account?</a></router-link>
                         </div>
                     </form>
                 </div>

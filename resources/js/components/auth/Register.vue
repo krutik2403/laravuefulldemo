@@ -25,9 +25,9 @@
                             <label for="name">Comfirm Password</label>
                             <input type="password" name="password_confirmation" id="password_confirmation" placeholder="*********" class="form-control" v-model="user.password_confirmation"> 
                         </div>
-                        <div class="text-left">
+                        <div class="text-center">
                             <button class="btn btn-secondary btn-block">Register</button>
-                            <a href="" class="btn btn-success btn-block">Already have an account?</a>
+                            <router-link to="/login"><a class="nav-link">Already have an account?</a></router-link>
                         </div>
                     </form>
                 </div>

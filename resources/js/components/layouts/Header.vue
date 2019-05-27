@@ -11,7 +11,7 @@
 </template>
 
 <style>
-    a, a:hover {
+    .navbar a, .navbar a:hover {
         color: white;
     }
 </style>
