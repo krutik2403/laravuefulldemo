@@ -17,7 +17,7 @@ class ToDoController extends Controller
     {
         try {
             
-            $todos = Todo::orderBy('created_at', 'DESC')->get();
+            $todos = Todo::orderBy('created_at', 'DESC')->paginate(3);
 
             return response()->json([   
                 'status'    => 1,

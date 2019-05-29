@@ -10,11 +10,19 @@
                 <div class="form-group">
                     <textarea class="form-control" cols="30" rows="2" v-model="todo.description" required></textarea>
                 </div>
+                
                 <div class="form-group">
                     <button class="btn btn-success btn-block">Save</button>
                 </div>
             </form>
 
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">                
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]"><button type="button" class="page-link" @click="fetchTodos(pagination.prev_page_url)">Previous</button></li>            
+                    <li class="page-item disabled"><a class="page-link test-dark" href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]"><button type="button" class="page-link" @click="fetchTodos(pagination.next_page_url)">Next</button></li>                </ul>
+            </nav>
+            
             <div v-for="todo in todos" v-bind:key="todo.id" class="alert alert-warning">
                 {{ todo.title }}
                 
@@ -23,6 +31,14 @@
                     <a @click="removeTodo(todo.id)"><i class="fa fa-trash"></i></a>
                 </div>
             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">                
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.prev_page_url}]"><button type="button" class="page-link" @click="fetchTodos(pagination.prev_page_url)">Previous</button></li>            
+                    <li class="page-item disabled"><a class="page-link test-dark" href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
+                    <li class="page-item" v-bind:class="[{disabled: !pagination.next_page_url}]"><button type="button" class="page-link" @click="fetchTodos(pagination.next_page_url)">Next</button></li>                
+                </ul>
+            </nav>
         </div>
     </div>
 </template>
@@ -37,19 +53,33 @@ export default {
                 title: '',
                 description: ''                
             },
-            editTodoItem: false,
-            api_url: '',
-            method: ''
+            editTodoItem: false,            
+            pagination: {}
         }
     },
 
     methods: {
-        fetchTodos() {
-            fetch('/api/todo')
+        fetchTodos(page_url) {            
+            fetch(page_url ? page_url : '/api/todo')
             .then(res => res.json())
             .then(res => {
-                this.todos = res.data.todos;                    
+                this.todos = res.data.todos.data;                    
+                this.makePagination(res.data.todos)
             }).catch(error => console(error));
+        },
+
+        makePagination(data) {
+            
+            let pagination = {
+                current_page: data.current_page,
+                last_page: data.last_page,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url
+            };
+
+            this.pagination = pagination;
+            console.log(this.pagination.prev_page_url);
+            console.log(this.pagination.next_page_url);
         },
 
         saveTodo() {
@@ -110,7 +140,7 @@ export default {
             this.todo.id = todo.id;
             this.todo.title = todo.title;
             this.todo.description = todo.description;
-        }
+        },
     },  
     
     computed: {

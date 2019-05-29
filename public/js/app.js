@@ -2157,6 +2157,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2167,21 +2183,33 @@ __webpack_require__.r(__webpack_exports__);
         description: ''
       },
       editTodoItem: false,
-      api_url: '',
-      method: ''
+      pagination: {}
     };
   },
   methods: {
-    fetchTodos: function fetchTodos() {
+    fetchTodos: function fetchTodos(page_url) {
       var _this = this;
 
-      fetch('/api/todo').then(function (res) {
+      fetch(page_url ? page_url : '/api/todo').then(function (res) {
         return res.json();
       }).then(function (res) {
-        _this.todos = res.data.todos;
+        _this.todos = res.data.todos.data;
+
+        _this.makePagination(res.data.todos);
       })["catch"](function (error) {
         return console(error);
       });
+    },
+    makePagination: function makePagination(data) {
+      var pagination = {
+        current_page: data.current_page,
+        last_page: data.last_page,
+        next_page_url: data.next_page_url,
+        prev_page_url: data.prev_page_url
+      };
+      this.pagination = pagination;
+      console.log(this.pagination.prev_page_url);
+      console.log(this.pagination.next_page_url);
     },
     saveTodo: function saveTodo() {
       var _this2 = this;
@@ -38958,6 +38986,71 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
+        _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+          _c("ul", { staticClass: "pagination" }, [
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.prev_page_url }]
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "page-link",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.fetchTodos(_vm.pagination.prev_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("li", { staticClass: "page-item disabled" }, [
+              _c(
+                "a",
+                { staticClass: "page-link test-dark", attrs: { href: "#" } },
+                [
+                  _vm._v(
+                    "Page " +
+                      _vm._s(_vm.pagination.current_page) +
+                      " of " +
+                      _vm._s(_vm.pagination.last_page)
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.next_page_url }]
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "page-link",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.fetchTodos(_vm.pagination.next_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("Next")]
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
         _vm._l(_vm.todos, function(todo) {
           return _c(
             "div",
@@ -38995,7 +39088,72 @@ var render = function() {
               ])
             ]
           )
-        })
+        }),
+        _vm._v(" "),
+        _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+          _c("ul", { staticClass: "pagination" }, [
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.prev_page_url }]
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "page-link",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.fetchTodos(_vm.pagination.prev_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("li", { staticClass: "page-item disabled" }, [
+              _c(
+                "a",
+                { staticClass: "page-link test-dark", attrs: { href: "#" } },
+                [
+                  _vm._v(
+                    "Page " +
+                      _vm._s(_vm.pagination.current_page) +
+                      " of " +
+                      _vm._s(_vm.pagination.last_page)
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "li",
+              {
+                staticClass: "page-item",
+                class: [{ disabled: !_vm.pagination.next_page_url }]
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "page-link",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.fetchTodos(_vm.pagination.next_page_url)
+                      }
+                    }
+                  },
+                  [_vm._v("Next")]
+                )
+              ]
+            )
+          ])
+        ])
       ],
       2
     )
