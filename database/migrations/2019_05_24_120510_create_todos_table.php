@@ -18,6 +18,7 @@ class CreateTodosTable extends Migration
             $table->integer('user_id')->default(0);
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->string('image2wbmp(image)')->nullable();
             $table->timestamps();
         });
     }

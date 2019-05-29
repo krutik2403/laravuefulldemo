@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Todo;
+use Storage;
 
 class ToDoController extends Controller
 {
@@ -55,8 +56,20 @@ class ToDoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string'],
-            'description' => ['required', 'string']
+            'description' => ['required', 'string'],
+            'image' => ['required']
         ]);
+
+        // if($request->has('image')) {
+        //     $image = $request->image;
+        //     $name = uniqid() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+        //     list($imageData, $imageContent) = explode(',', $image);            
+        //     Storage::put($name, base64_decode($imageContent));
+        //     echo $name . 'Image present';
+        // } else {
+        //     echo 'Not Present';
+        // }
+        // exit;
 
         try {
 
@@ -71,6 +84,17 @@ class ToDoController extends Controller
                 'title' => $request->title,
                 'description' => $request->description
             ]);
+
+            if($request->has('image')) {
+                $image = $request->image;
+                $filename = uniqid() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                $path = "todo_images/";
+
+                list($imageData, $imageContent) = explode(',', $image);            
+                Storage::disk('public')->put($path . $filename, base64_decode($imageContent));
+                $todo->image = $filename;
+                $todo->save();                
+            }
 
             return response()->json([
                 'status'    => 1, 
@@ -135,6 +159,22 @@ class ToDoController extends Controller
                 $todo->title = $request->title;
                 $todo->description = $request->description;
                 $todo->save();
+
+                if($request->has('image')) {
+                    $image = $request->image;
+                    $filename = uniqid() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                    $path = "todo_images/";
+    
+                    list($imageData, $imageContent) = explode(',', $image);            
+                    Storage::disk('public')->put($path . $filename, base64_decode($imageContent));
+                    $old_image = $todo->image;
+                    $todo->image = $filename;
+                    $todo->save();             
+                    
+                    if($old_image != '' && Storage::disk('public')->exists('todo_images/' . $old_image)) {
+                        Storage::disk('public')->delete('todo_images/' . $old_image);
+                    }
+                }
             } else {
                 return response()->json([
                     'status'    => 0, 
@@ -165,8 +205,13 @@ class ToDoController extends Controller
         try {
 
             $todo = Todo::findOrFail($id);
-
+            $old_image = $todo->image;
             if($todo->delete()) {
+                
+                if($old_image != '' && Storage::disk('public')->exists('todo_images/' . $old_image)) {
+                    Storage::disk('public')->delete('todo_images/' . $old_image);
+                }
+
                 return response()->json([
                     'status'    => 1, 
                     'message'   => 'Success'
